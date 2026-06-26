@@ -1,0 +1,337 @@
+{
+  "info": {
+    "_postman_id": "e1747871-b0be-4554-a78d-22d69c53f8ec",
+    "name": "CI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55401225",
+    "_collection_link": "https://go.postman.co/collection/55401225-e1747871-b0be-4554-a78d-22d69c53f8ec?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST /api/units",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 201\", () => pm.response.to.have.status(201));\r",
+              "pm.test(\"Unit is AVAILABLE\",  () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.status).to.eql(\"AVAILABLE\");\r",
+              "    pm.collectionVariables.set(\"unitId\", body.id)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Medical Unit 1\",\r\n    \"callSign\": \"MU-1\",\r\n    \"maxConcurrentCalls\": 2\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/units",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "units"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /api/alerts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 201\", () => pm.response.to.have.status(201));\r",
+              "pm.test(\"Alert is PENDING\", () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.status).to.equal('PENDING');\r",
+              "    pm.collectionVariables.set(\"alertId\", body.id);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alerts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /api/alerts 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 201\", () => pm.response.to.have.status(201));\r",
+              "pm.test(\"Alert is PENDING\", () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.status).to.equal('PENDING');\r",
+              "    pm.collectionVariables.set(\"alertId\", body.id);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"type\": \"MEDICAL\",\r\n    \"priority\": \"CRITICAL\",\r\n    \"sourceId\": \"100\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alerts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /api/units",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Returns array\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an('array');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/units",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "units"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /api/units/{{unitId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Correct unit\", () => {\r",
+              "    pm.expect(pm.response.json().id).to.equal(pm.collectionVariables.get(\"unitId\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "GET /api/alerts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Returns array\", () => {\r",
+              "    pm.expect(pm.response.json()).to.be.an('array');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"type\": \"MEDICAL\",\r\n    \"priority\": \"CRITICAL\",\r\n    \"sourceId\": \"100\"\r\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alerts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /api/alerts/{{alertId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Alert is PENDING\", () => {\r",
+              "    pm.expect(pm.response.json().status).to.equal('PENDING');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts/{{alertId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "alerts",
+            "{{alertId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE /api/units/{{unitId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/units/{{unitId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "units",
+            "{{unitId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "unitId",
+      "value": ""
+    },
+    {
+      "key": "alertId",
+      "value": ""
+    }
+  ]
+}
