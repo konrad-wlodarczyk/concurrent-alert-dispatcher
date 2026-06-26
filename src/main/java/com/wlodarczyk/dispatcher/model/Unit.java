@@ -64,5 +64,13 @@ public class Unit {
         this.updatedAt = Instant.now();
     }
 
+    public UUID getId(){return this.id;}
+    public String getName(){return this.name;}
+    public String getCallSign(){return this.callSign;}
+    public UnitStatus getStatus(){return this.status;}
+    public List<Alert> getActiveAlerts(){return this.activeAlerts;}
+    public int getMaxConcurrentCalls(){return this.maxConcurrentCalls;}
+    public Instant getCreatedAt(){return this.createdAt;}
+    public Instant getUpdatedAt(){return this.updatedAt;}
 
 }

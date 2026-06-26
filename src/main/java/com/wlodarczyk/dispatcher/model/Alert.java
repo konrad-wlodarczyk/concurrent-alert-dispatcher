@@ -74,4 +74,18 @@ public class Alert {
         this.updatedAt = Instant.now();
     }
 
+    public void setStatus(AlertStatus status){this.status = status;}
+    public void setUnit(Unit unit){this.unit = unit;}
+    public void setResolvedAt(Instant resolvedAt){this.resolvedAt = resolvedAt;}
+
+    public UUID getId(){return this.id;}
+    public AlertType getType(){return this.type;}
+    public AlertStatus getStatus(){return this.status;}
+    public String getDescription(){return this.description;}
+    public String getSourceId(){return this.sourceId;}
+    public UUID getUnitId(){return this.unit != null ? this.unit.getId() : null;}
+    public Instant getCreatedAt(){return this.createdAt;}
+    public Instant getUpdatedAt(){return this.updatedAt;}
+    public Instant getResolvedAt(){return this.resolvedAt;}
+
 }
