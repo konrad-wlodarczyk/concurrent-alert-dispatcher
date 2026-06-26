@@ -4,6 +4,8 @@ import com.wlodarczyk.dispatcher.model.enums.AlertPriority;
 import com.wlodarczyk.dispatcher.model.enums.AlertStatus;
 import com.wlodarczyk.dispatcher.model.enums.AlertType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -16,6 +18,8 @@ import java.util.UUID;
                 @Index(name = "idx_alerts_unit_id", columnList = "unit_id")
 
         })
+@SQLDelete(sql = "UPDATE alerts SET deleted = true, updated_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted = false")
 public class Alert {
 
     @Id
@@ -53,6 +57,9 @@ public class Alert {
     @Column(nullable = true)
     private Instant resolvedAt;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
     protected Alert(){};
 
     public Alert(AlertType type, AlertPriority priority, String description, String sourceId){
@@ -61,6 +68,7 @@ public class Alert {
         this.priority = priority;
         this.description = description;
         this.sourceId = sourceId;
+        this.deleted = false;
     }
 
     @PrePersist
@@ -77,6 +85,7 @@ public class Alert {
     public void setStatus(AlertStatus status){this.status = status;}
     public void setUnit(Unit unit){this.unit = unit;}
     public void setResolvedAt(Instant resolvedAt){this.resolvedAt = resolvedAt;}
+    public void setDeleted(boolean deleted){this.deleted = deleted;}
 
     public UUID getId(){return this.id;}
     public AlertType getType(){return this.type;}
@@ -87,5 +96,6 @@ public class Alert {
     public Instant getCreatedAt(){return this.createdAt;}
     public Instant getUpdatedAt(){return this.updatedAt;}
     public Instant getResolvedAt(){return this.resolvedAt;}
+    public boolean isDeleted(){return this.deleted;}
 
 }

@@ -2,6 +2,8 @@ package com.wlodarczyk.dispatcher.model;
 
 import com.wlodarczyk.dispatcher.model.enums.UnitStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.UUID;
                 @Index(name = "idx_units_status", columnList = "status"),
                 @Index(name = "idx_units_call_sign", columnList = "callSign")
         })
+@SQLDelete(sql = "UPDATE units SET deleted = true, updated_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted = false")
 public class Unit {
 
     @Id
@@ -43,6 +47,9 @@ public class Unit {
     @Column(nullable = false)
     private Instant updatedAt;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
     protected Unit(){};
 
     public Unit(String name, String callSign, int maxConcurrentCalls){
@@ -51,6 +58,7 @@ public class Unit {
         this.maxConcurrentCalls = maxConcurrentCalls;
         this.status = UnitStatus.AVAILABLE;
         this.activeAlerts = new ArrayList<>();
+        this.deleted = false;
     }
 
     @PrePersist
@@ -64,6 +72,8 @@ public class Unit {
         this.updatedAt = Instant.now();
     }
 
+    public void setDeleted(boolean deleted){this.deleted = deleted;}
+
     public UUID getId(){return this.id;}
     public String getName(){return this.name;}
     public String getCallSign(){return this.callSign;}
@@ -72,5 +82,6 @@ public class Unit {
     public int getMaxConcurrentCalls(){return this.maxConcurrentCalls;}
     public Instant getCreatedAt(){return this.createdAt;}
     public Instant getUpdatedAt(){return this.updatedAt;}
+    public boolean isDeleted(){return this.deleted;}
 
 }
