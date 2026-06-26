@@ -1,0 +1,204 @@
+{
+  "info": {
+    "_postman_id": "e1747871-b0be-4554-a78d-22d69c53f8ec",
+    "name": "CI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST /api/units",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+              "pm.test(\"Unit is AVAILABLE\", () => {",
+              "    const body = pm.response.json();",
+              "    pm.expect(body.status).to.eql(\"AVAILABLE\");",
+              "    pm.environment.set(\"unitId\", body.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Medical Unit 1\",\n    \"callSign\": \"MU-1\",\n    \"maxConcurrentCalls\": 2\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/units",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "units"]
+        }
+      }
+    },
+    {
+      "name": "POST /api/alerts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+              "pm.test(\"Alert is PENDING\", () => {",
+              "    const body = pm.response.json();",
+              "    pm.expect(body.status).to.equal(\"PENDING\");",
+              "    pm.environment.set(\"alertId\", body.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"type\": \"MEDICAL\",\n    \"priority\": \"CRITICAL\",\n    \"sourceId\": \"100\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts"]
+        }
+      }
+    },
+    {
+      "name": "GET /api/units",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Returns array\", () => {",
+              "    pm.expect(pm.response.json()).to.be.an(\"array\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/units",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "units"]
+        }
+      }
+    },
+    {
+      "name": "GET /api/units/{{unitId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Correct unit\", () => {",
+              "    pm.expect(pm.response.json().id).to.equal(pm.environment.get(\"unitId\"));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/units/{{unitId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "units", "{{unitId}}"]
+        }
+      }
+    },
+    {
+      "name": "GET /api/alerts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Returns array\", () => {",
+              "    pm.expect(pm.response.json()).to.be.an(\"array\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts"]
+        }
+      }
+    },
+    {
+      "name": "GET /api/alerts/{{alertId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Alert is PENDING\", () => {",
+              "    pm.expect(pm.response.json().status).to.equal(\"PENDING\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts/{{alertId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts", "{{alertId}}"]
+        }
+      }
+    },
+    {
+      "name": "DELETE /api/units/{{unitId}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/units/{{unitId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "units", "{{unitId}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {"key": "unitId", "value": ""},
+    {"key": "alertId", "value": ""}
+  ]
+}
