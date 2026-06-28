@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 import java.time.Instant;
 import java.util.UUID;
 
+
 @Entity
 @Table(
         name = "alerts",
@@ -90,6 +91,7 @@ public class Alert {
     public UUID getId(){return this.id;}
     public AlertType getType(){return this.type;}
     public AlertStatus getStatus(){return this.status;}
+    public AlertPriority getPriority(){return this.priority;}
     public String getDescription(){return this.description;}
     public String getSourceId(){return this.sourceId;}
     public UUID getUnitId(){return this.unit != null ? this.unit.getId() : null;}
@@ -97,5 +99,28 @@ public class Alert {
     public Instant getUpdatedAt(){return this.updatedAt;}
     public Instant getResolvedAt(){return this.resolvedAt;}
     public boolean isDeleted(){return this.deleted;}
+    public Unit getUnit(){return this.unit;}
 
+    public void assignUnit(Unit unit){
+        this.unit = unit;
+        this.status = AlertStatus.PROCESSING;
+    }
+
+    public void markDispatched() {
+        this.status = AlertStatus.DISPATCHED;
+    }
+
+    public void markFailed() {
+        this.status = AlertStatus.FAILED;
+    }
+
+    public void markResolved() {
+        this.status = AlertStatus.RESOLVED;
+        detachUnit();
+        this.resolvedAt = Instant.now();
+    }
+
+    private void detachUnit() {
+        this.unit = null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.wlodarczyk.dispatcher.model;
 
 import com.wlodarczyk.dispatcher.model.enums.UnitStatus;
+import com.wlodarczyk.dispatcher.model.enums.UnitType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -28,8 +29,12 @@ public class Unit {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, unique = true)
     private String callSign;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UnitType type;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -52,9 +57,10 @@ public class Unit {
 
     protected Unit(){};
 
-    public Unit(String name, String callSign, int maxConcurrentCalls){
+    public Unit(String name, String callSign, UnitType type, int maxConcurrentCalls){
         this.name = name;
         this.callSign = callSign;
+        this.type = type;
         this.maxConcurrentCalls = maxConcurrentCalls;
         this.status = UnitStatus.AVAILABLE;
         this.activeAlerts = new ArrayList<>();
@@ -83,5 +89,20 @@ public class Unit {
     public Instant getCreatedAt(){return this.createdAt;}
     public Instant getUpdatedAt(){return this.updatedAt;}
     public boolean isDeleted(){return this.deleted;}
+    public UnitType getType(){return this.type;}
+
+    public void assignAlert(Alert alert){
+        this.activeAlerts.add(alert);
+        if (this.activeAlerts.size() >= this.maxConcurrentCalls){
+            this.status = UnitStatus.BUSY;
+        }
+    }
+
+    public void releaseAlert(Alert alert){
+        this.activeAlerts.remove(alert);
+        if (this.activeAlerts.size() < this.maxConcurrentCalls) {
+            this.status = UnitStatus.AVAILABLE;
+        }
+    }
 
 }

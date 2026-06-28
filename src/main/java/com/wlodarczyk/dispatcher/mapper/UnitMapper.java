@@ -12,6 +12,7 @@ public class UnitMapper {
         return new Unit(
                 request.name(),
                 request.callSign(),
+                request.type(),
                 request.maxConcurrentCalls()
         );
     }
@@ -21,6 +22,7 @@ public class UnitMapper {
                 unit.getId(),
                 unit.getName(),
                 unit.getCallSign(),
+                unit.getType(),
                 unit.getStatus(),
                 unit.getActiveAlerts().size(),
                 unit.getMaxConcurrentCalls(),

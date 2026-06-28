@@ -1,5 +1,6 @@
 package com.wlodarczyk.dispatcher.service;
 
+import com.wlodarczyk.dispatcher.dispatcher.AlertDispatcher;
 import com.wlodarczyk.dispatcher.dto.request.AlertRequest;
 import com.wlodarczyk.dispatcher.dto.response.AlertResponse;
 import com.wlodarczyk.dispatcher.mapper.AlertMapper;
@@ -17,17 +18,20 @@ public class AlertService {
 
     private final AlertMapper alertMapper;
     private final AlertRepository alertRepository;
+    private final AlertDispatcher alertDispatcher;
 
-    public AlertService(AlertRepository alertRepository, AlertMapper alertMapper){
+    public AlertService(AlertRepository alertRepository, AlertMapper alertMapper, AlertDispatcher alertDispatcher){
         this.alertMapper = alertMapper;
         this.alertRepository = alertRepository;
+        this.alertDispatcher = alertDispatcher;
     }
 
     @Transactional
-    public AlertResponse createAlert(AlertRequest request){
+    public AlertResponse createAlert(AlertRequest request) {
         Alert alert = alertMapper.toEntity(request);
-
-        return alertMapper.toResponse(alertRepository.save(alert));
+        Alert saved = alertRepository.save(alert);
+        alertDispatcher.enqueue(saved);
+        return alertMapper.toResponse(saved);
     }
 
     @Transactional

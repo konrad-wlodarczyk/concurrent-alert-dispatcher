@@ -28,7 +28,7 @@
         "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Medical Unit 1\",\n    \"callSign\": \"MU-1\",\n    \"maxConcurrentCalls\": 2\n}"
+          "raw": "{\n    \"name\": \"Medical Unit 1\",\n    \"callSign\": \"MU-1\",\n    \"type\": \"MEDICAL\",\n    \"maxConcurrentCalls\": 2\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/units",
@@ -155,8 +155,8 @@
           "script": {
             "exec": [
               "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-              "pm.test(\"Alert is PENDING\", () => {",
-              "    pm.expect(pm.response.json().status).to.equal(\"PENDING\");",
+              "pm.test(\"Alert is DISPATCHED\", () => {",
+              "    pm.expect(pm.response.json().status).to.equal(\"DISPATCHED\");",
               "});"
             ],
             "type": "text/javascript"
@@ -170,6 +170,17 @@
           "raw": "{{baseUrl}}/api/alerts/{{alertId}}",
           "host": ["{{baseUrl}}"],
           "path": ["api", "alerts", "{{alertId}}"]
+        }
+      }
+    },
+    {
+      "name": "POST /api/alerts/{alertId}/resolve",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts/{{alertId}}/resolve",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts", "{{alertId}}", "resolve"]
         }
       }
     },
