@@ -155,8 +155,8 @@
           "script": {
             "exec": [
               "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-              "pm.test(\"Alert is PENDING\", () => {",
-              "    pm.expect(pm.response.json().status).to.equal(\"PENDING\");",
+              "pm.test(\"Alert is DISPATCHED\", () => {",
+              "    pm.expect(pm.response.json().status).to.equal(\"DISPATCHED\");",
               "});"
             ],
             "type": "text/javascript"
