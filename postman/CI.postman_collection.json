@@ -28,7 +28,7 @@
         "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Medical Unit 1\",\n    \"callSign\": \"MU-1\",\n    \"maxConcurrentCalls\": 2\n}"
+          "raw": "{\n    \"name\": \"Medical Unit 1\",\n    \"callSign\": \"MU-1\",\n    \"type\": \"MEDICAL\",\n    \"maxConcurrentCalls\": 2\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/units",
@@ -193,6 +193,17 @@
           "raw": "{{baseUrl}}/api/units/{{unitId}}",
           "host": ["{{baseUrl}}"],
           "path": ["api", "units", "{{unitId}}"]
+        }
+      }
+    },
+    {
+      "name": "POST /api/alerts/{alertId}/resolve",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts/{{alertId}}/resolve",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts", "{{alertId}}", "resolve"]
         }
       }
     }
