@@ -3,6 +3,7 @@ package com.wlodarczyk.dispatcher.dto.request;
 import com.wlodarczyk.dispatcher.model.enums.AlertPriority;
 import com.wlodarczyk.dispatcher.model.enums.AlertType;
 import com.wlodarczyk.dispatcher.model.enums.UnitStatus;
+import com.wlodarczyk.dispatcher.model.enums.UnitType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,9 @@ public record UnitRequest(
         @NotBlank(message = "Call sign cannot be blank")
         @Size(max = 50)
         String callSign,
+
+        @NotNull(message = "Unit type cannot be blank")
+        UnitType type,
 
         @Min(value = 1, message = "Max concurrent calls must be at least 1")
         int maxConcurrentCalls
