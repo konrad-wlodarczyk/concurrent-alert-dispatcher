@@ -174,6 +174,17 @@
       }
     },
     {
+      "name": "POST /api/alerts/{alertId}/resolve",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/alerts/{{alertId}}/resolve",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "alerts", "{{alertId}}", "resolve"]
+        }
+      }
+    },
+    {
       "name": "DELETE /api/units/{{unitId}}",
       "event": [
         {
@@ -193,17 +204,6 @@
           "raw": "{{baseUrl}}/api/units/{{unitId}}",
           "host": ["{{baseUrl}}"],
           "path": ["api", "units", "{{unitId}}"]
-        }
-      }
-    },
-    {
-      "name": "POST /api/alerts/{alertId}/resolve",
-      "request": {
-        "method": "POST",
-        "url": {
-          "raw": "{{baseUrl}}/api/alerts/{{alertId}}/resolve",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "alerts", "{{alertId}}", "resolve"]
         }
       }
     }
