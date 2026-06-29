@@ -1,5 +1,7 @@
 package com.wlodarczyk.dispatcher.service;
 
+import com.wlodarczyk.dispatcher.exception.BusinessException;
+import com.wlodarczyk.dispatcher.exception.ResourceNotFoundException;
 import com.wlodarczyk.dispatcher.model.Alert;
 import com.wlodarczyk.dispatcher.model.Unit;
 import com.wlodarczyk.dispatcher.model.enums.AlertStatus;
@@ -45,10 +47,10 @@ public class DispatchService {
     @Transactional
     public void resolve(UUID id){
         Alert alert = alertRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Alert not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Alert with ID: " + id + " does not exist"));
 
         if(alert.getStatus() != AlertStatus.DISPATCHED) {
-            throw new IllegalStateException("Only DISPATCHED alerts can be resolved");
+            throw new BusinessException("Only DISPATCHED alerts can be resolved");
         }
 
         Unit unit = alert.getUnit();

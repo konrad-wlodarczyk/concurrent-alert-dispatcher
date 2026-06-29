@@ -3,6 +3,8 @@ package com.wlodarczyk.dispatcher.service;
 import com.wlodarczyk.dispatcher.dispatcher.AlertDispatcher;
 import com.wlodarczyk.dispatcher.dto.request.AlertRequest;
 import com.wlodarczyk.dispatcher.dto.response.AlertResponse;
+import com.wlodarczyk.dispatcher.exception.BusinessException;
+import com.wlodarczyk.dispatcher.exception.ResourceNotFoundException;
 import com.wlodarczyk.dispatcher.mapper.AlertMapper;
 import com.wlodarczyk.dispatcher.model.Alert;
 import com.wlodarczyk.dispatcher.model.enums.AlertStatus;
@@ -44,7 +46,7 @@ public class AlertService {
     @Transactional
     public AlertResponse getAlertById(UUID id){
         Alert alert = alertRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Alert with ID: " + id + " does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Alert with ID: " + id + " does not exist"));
 
         return alertMapper.toResponse(alert);
     }
@@ -52,10 +54,10 @@ public class AlertService {
     @Transactional
     public void deleteAlert(UUID id){
         Alert alert = alertRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Alert with ID: " + id + " does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Alert with ID: " + id + " does not exist"));
 
         if(alert.getStatus() != AlertStatus.RESOLVED && alert.getStatus() != AlertStatus.FAILED){
-            throw new IllegalStateException("Cannot delete alerts that are not either resolved or failed");
+            throw new BusinessException("Cannot delete alerts that are not either resolved or failed");
         }
 
         alertRepository.delete(alert);
