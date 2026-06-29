@@ -2,6 +2,8 @@ package com.wlodarczyk.dispatcher.service;
 
 import com.wlodarczyk.dispatcher.dto.request.UnitRequest;
 import com.wlodarczyk.dispatcher.dto.response.UnitResponse;
+import com.wlodarczyk.dispatcher.exception.BusinessException;
+import com.wlodarczyk.dispatcher.exception.ResourceNotFoundException;
 import com.wlodarczyk.dispatcher.mapper.UnitMapper;
 import com.wlodarczyk.dispatcher.model.Unit;
 import com.wlodarczyk.dispatcher.model.enums.UnitStatus;
@@ -39,7 +41,7 @@ public class UnitService {
     @Transactional
     public UnitResponse getUnitById(UUID id){
         Unit unit = unitRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Unit with ID: " + id + " does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unit with ID: " + id + " does not exist"));
 
         return unitMapper.toResponse(unit);
     }
@@ -47,10 +49,10 @@ public class UnitService {
     @Transactional
     public void deleteUnit(UUID id){
         Unit unit = unitRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Unit with ID: " + id + " does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unit with ID: " + id + " does not exist"));
 
         if (!unit.getActiveAlerts().isEmpty() || unit.getStatus() == UnitStatus.BUSY) {
-            throw new IllegalStateException("Cannot delete a unit that is currently on duty, busy, or has active alerts.");
+            throw new BusinessException("Cannot delete a unit that is currently on duty, busy, or has active alerts.");
         }
 
         unitRepository.delete(unit);
