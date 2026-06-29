@@ -356,22 +356,22 @@
         "method": "POST",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/alerts/resolve/00000000-0000-0000-0000-000000000000",
+          "raw": "{{baseUrl}}/api/alerts/00000000-0000-0000-0000-000000000000/resolve",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "alerts",
-            "resolve",
-            "00000000-0000-0000-0000-000000000000"
+            "00000000-0000-0000-0000-000000000000",
+            "resolve"
           ]
         }
       },
       "response": []
     },
     {
-      "name": "POST /api/alerts/resolve/00000000-0000-0000-0000-000000000000 NOT_FOUND",
+      "name": "POST /api/alerts/00000000-0000-0000-0000-000000000000/resolve NOT_FOUND",
       "event": [
         {
           "listen": "test",
@@ -389,14 +389,15 @@
         "method": "POST",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/alerts/00000000-0000-0000-0000-000000000000",
+          "raw": "{{baseUrl}}/api/alerts/00000000-0000-0000-0000-000000000000/resolve",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
             "api",
             "alerts",
-            "00000000-0000-0000-0000-000000000000"
+            "00000000-0000-0000-0000-000000000000",
+            "resolve"
           ]
         }
       },
