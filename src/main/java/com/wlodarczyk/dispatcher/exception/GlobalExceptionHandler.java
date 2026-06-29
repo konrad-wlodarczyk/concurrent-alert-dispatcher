@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    //404
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request){
         return createProblemDetail(
@@ -26,6 +27,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //409
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleBusinessRuleConflictException(BusinessException ex, HttpServletRequest request){
         return createProblemDetail(
@@ -37,6 +39,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //400
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request){
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
@@ -52,6 +55,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //400
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleReadable(HttpMessageNotReadableException ex, HttpServletRequest request){
         return createProblemDetail(
@@ -63,6 +67,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //500
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleUncaughtExceptions(Exception ex, HttpServletRequest request){
         return createProblemDetail(
